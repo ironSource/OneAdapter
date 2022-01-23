@@ -4,7 +4,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.idanatz.oneadapter.internal.utils.Logger
-import com.idanatz.oneadapter.internal.utils.extensions.findLastVisibleItemPosition
+import com.idanatz.oneadapter.internal.utils.extensions.findLastItemIndex
+import com.idanatz.oneadapter.internal.utils.extensions.findLastVisibleItemIndex
 
 internal class OneScrollListener (
         private val layoutManager: RecyclerView.LayoutManager,
@@ -67,10 +68,11 @@ internal class OneScrollListener (
     private fun isUserScrolled(view: RecyclerView) = view.scrollState != RecyclerView.SCROLL_STATE_IDLE
 
     private fun evaluateLoadingState(): LoadingState {
-        val lastItemIndex = layoutManager.itemCount - 1
-        val lastVisibleItemIndex = layoutManager.findLastVisibleItemPosition()
+        val lastItemIndex = layoutManager.findLastItemIndex()
+        val lastVisibleItemIndex = layoutManager.findLastVisibleItemIndex()
 
         return when {
+			lastItemIndex == RecyclerView.NO_POSITION || lastVisibleItemIndex == RecyclerView.NO_POSITION -> LoadingState.Normal
             isLoadingFinished(lastItemIndex) -> LoadingState.FinishLoading
             shouldStartLoading(lastVisibleItemIndex, lastItemIndex) -> LoadingState.LoadingStarted
             loading -> LoadingState.MidLoading

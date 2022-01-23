@@ -13,8 +13,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class WhenCallingSetItemsWithLessThanThreshold_ThenOnLoadMore_ShouldBeCalledOnce : BaseTest() {
+class WhenCallingSetItemsWithNoItems_ThenPaging_ShouldNotBeTriggered : BaseTest() {
 
+	private var onBindCalls = 0
 	private var onLoadMoreCalls = 0
 
 	@Test
@@ -27,10 +28,11 @@ class WhenCallingSetItemsWithLessThanThreshold_ThenOnLoadMore_ShouldBeCalledOnce
 				}
 			}
 			act {
-				oneAdapter.setItems(modelGenerator.generateModels(3).toMutableList())
+				oneAdapter.setItems(listOf())
 			}
-			untilAsserted(assertDelay = 500) {
-				onLoadMoreCalls shouldEqualTo 1
+			untilAsserted(assertDelay = 800) {
+				onBindCalls shouldEqualTo 0
+				onLoadMoreCalls shouldEqualTo 0
 			}
 		}
 	}
@@ -38,6 +40,9 @@ class WhenCallingSetItemsWithLessThanThreshold_ThenOnLoadMore_ShouldBeCalledOnce
 	inner class TestPagingModule : PagingModule() {
 		init {
 			config = modulesGenerator.generateValidPagingModuleConfig()
+			onBind { _, _ ->
+				onBindCalls++
+			}
 			onLoadMore {
 				onLoadMoreCalls++
 			}

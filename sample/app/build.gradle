@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 apply from: '../../versions.gradle'
 
 ext {
     LOTTIE_VERSION = '2.7.0'
-    ROOM_VERSION = '2.0.0'
+    ROOM_VERSION = '2.3.0'
     VIEW_MODEL_VERSION = '2.0.0'
     GLIDE_VERSION = '4.8.0'
 }

@@ -8,7 +8,7 @@ import com.idanatz.oneadapter.external.interfaces.Diffable
 import com.idanatz.oneadapter.internal.holders.OneViewHolder
 import java.lang.IllegalStateException
 
-internal fun RecyclerView.LayoutManager.findFirstVisibleItemPosition(): Int {
+internal fun RecyclerView.LayoutManager.findFirstVisibleItemIndex(): Int {
     return when (this) {
         is LinearLayoutManager -> findFirstVisibleItemPosition()
         is GridLayoutManager -> findFirstVisibleItemPosition()
@@ -30,7 +30,7 @@ internal fun RecyclerView.LayoutManager.findFirstVisibleItemPosition(): Int {
     }
 }
 
-internal fun RecyclerView.LayoutManager.findLastVisibleItemPosition(): Int {
+internal fun RecyclerView.LayoutManager.findLastVisibleItemIndex(): Int {
     return when (this) {
         is LinearLayoutManager -> findLastVisibleItemPosition()
         is GridLayoutManager -> findLastVisibleItemPosition()
@@ -50,6 +50,13 @@ internal fun RecyclerView.LayoutManager.findLastVisibleItemPosition(): Int {
         }
         else -> throw IllegalStateException("Recycler view layout manager is not supported")
     }
+}
+
+internal fun RecyclerView.LayoutManager.findLastItemIndex(): Int {
+	return when (itemCount) {
+		0 -> RecyclerView.NO_POSITION
+		else -> itemCount - 1
+	}
 }
 
 internal fun RecyclerView.ViewHolder.toOneViewHolder() = this as OneViewHolder<Diffable>

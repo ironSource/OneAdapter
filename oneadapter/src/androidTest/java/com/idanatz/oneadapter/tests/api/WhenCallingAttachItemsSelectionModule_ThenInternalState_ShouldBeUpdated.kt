@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class WhenCallingAttachIetmSelectionModule_ThenInternalState_ShouldBeUpdated : BaseTest() {
+class WhenCallingAttachItemsSelectionModule_ThenInternalState_ShouldBeUpdated : BaseTest() {
 
     @Test
     fun test() {

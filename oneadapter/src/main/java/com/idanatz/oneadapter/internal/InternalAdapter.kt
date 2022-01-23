@@ -78,7 +78,7 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
 
 	private val differ = AsyncListDiffer(
 			listUpdateCallback,
-			AsyncDifferConfig.Builder<Diffable>(OneDiffUtil()).build()
+			AsyncDifferConfig.Builder(OneDiffUtil()).build()
 	).apply {
 		addListListener { _, _ ->
 			// verify manually if paging should be triggered
@@ -294,9 +294,9 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
         }
     }
 
-	override fun shouldHandleLoadingEvent(): Boolean {
-		// paging should be disabled when EmptyIndicator is present
-		return !data.contains(EmptyIndicator)
+	override fun shouldHandleLoadingEvent(): Boolean = when {
+		data.contains(EmptyIndicator) -> false // paging should be disabled when EmptyIndicator is present
+		else -> true
 	}
 
 	override fun onLoadingStateChanged(loading: Boolean) {

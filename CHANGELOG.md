@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 2.1.2
+-------------
+* Fixed: issue #43
+
 Version 2.1.1
 -------------
 * Fixed: unable to update data from a background thread
