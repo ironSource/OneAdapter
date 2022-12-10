@@ -4,12 +4,13 @@ import com.idanatz.oneadapter.external.event_hooks.SwipeEventHook
 
 data class Metadata(
 		val position: Int = -1,
+		val isRebinding: Boolean,
 		private val animationMetadata: AnimationMetadata? = null,
 		private val selectionMetadata: SelectionMetadata? = null,
 		private val swipeMetadata: SwipeMetadata? = null
 ) : AnimationMetadata, SelectionMetadata, SwipeMetadata {
 
-	override val isAnimating: Boolean = animationMetadata?.isAnimating ?: false
+	override val isAnimatingFirstBind: Boolean = animationMetadata?.isAnimatingFirstBind ?: false
 	override val isSelected: Boolean = selectionMetadata?.isSelected ?: false
 	override val swipeDirection: SwipeEventHook.SwipeDirection = swipeMetadata?.swipeDirection ?: SwipeEventHook.SwipeDirection.None
 }
@@ -19,7 +20,7 @@ interface SelectionMetadata {
 }
 
 interface AnimationMetadata {
-	val isAnimating: Boolean
+	val isAnimatingFirstBind: Boolean
 }
 
 interface SwipeMetadata {

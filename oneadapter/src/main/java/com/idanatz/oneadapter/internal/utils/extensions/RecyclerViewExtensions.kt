@@ -60,3 +60,6 @@ internal fun RecyclerView.LayoutManager.findLastItemIndex(): Int {
 }
 
 internal fun RecyclerView.ViewHolder.toOneViewHolder() = this as OneViewHolder<Diffable>
+
+internal val RecyclerView.isScrolling: Boolean
+	get() = scrollState != RecyclerView.SCROLL_STATE_IDLE

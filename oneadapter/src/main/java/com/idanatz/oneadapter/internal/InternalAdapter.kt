@@ -10,7 +10,6 @@ import com.idanatz.oneadapter.external.holders.EmptyIndicator
 import com.idanatz.oneadapter.external.holders.LoadingIndicator
 import com.idanatz.oneadapter.external.interfaces.Diffable
 import com.idanatz.oneadapter.external.modules.*
-import com.idanatz.oneadapter.internal.animations.AnimationPositionHandler
 import com.idanatz.oneadapter.internal.diffing.OneDiffUtil
 import com.idanatz.oneadapter.internal.holders.*
 import com.idanatz.oneadapter.internal.holders.OneViewHolder
@@ -23,6 +22,7 @@ import com.idanatz.oneadapter.internal.swiping.OneItemTouchHelper
 import com.idanatz.oneadapter.internal.utils.Logger
 import com.idanatz.oneadapter.internal.utils.extensions.createMutableCopyAndApply
 import com.idanatz.oneadapter.internal.utils.extensions.isClassExists
+import com.idanatz.oneadapter.internal.utils.extensions.isScrolling
 import com.idanatz.oneadapter.internal.utils.extensions.removeAllItems
 import com.idanatz.oneadapter.internal.utils.extractGenericClass
 import com.idanatz.oneadapter.internal.validator.Validator
@@ -44,7 +44,7 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
         get() = recyclerView.context
 
     private val viewHolderCreatorsStore = ViewHolderCreatorsStore()
-    private val animationPositionHandler = AnimationPositionHandler()
+    private val holderPositionHandler = HolderPositionHandler()
     private val logger = Logger(this)
 
     // Paging
@@ -107,11 +107,13 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: OneViewHolder<Diffable>, position: Int) {
-        val model = data[position]
+	    val model = data[position]
+	    val isFirstBind = holderPositionHandler.isFirstBind(holder.itemViewType, position)
 		val metadata = Metadata(
 				position = position,
+				isRebinding = !isFirstBind && !recyclerView.isScrolling,
 				animationMetadata = object : AnimationMetadata {
-					override val isAnimating: Boolean = if (holder.firstBindAnimation != null) animationPositionHandler.shouldAnimateBind(holder.itemViewType, position) else false
+					override val isAnimatingFirstBind: Boolean = if (holder.firstBindAnimation != null) isFirstBind else false
 				},
 				selectionMetadata = object : SelectionMetadata {
 					override val isSelected: Boolean = isPositionSelected(position)
@@ -167,7 +169,7 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
 		// modify the incomingData if needed
 		when (incomingData.size) {
 			0 -> {
-				animationPositionHandler.resetState()
+				holderPositionHandler.resetState()
 
 				if (modules.emptinessModule != null) { incomingData.add(EmptyIndicator) }
 				if (modules.pagingModule != null) { oneScrollListener?.resetState() }
