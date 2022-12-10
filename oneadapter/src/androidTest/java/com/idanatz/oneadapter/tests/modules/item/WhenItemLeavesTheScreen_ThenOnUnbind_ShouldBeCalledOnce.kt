@@ -24,7 +24,7 @@ class WhenItemLeavesTheScreen_ThenOnUnbind_ShouldBeCalledOnce : BaseTest() {
 
             prepareOnActivity {
                 oneAdapter.attachItemModule(TestItemModule())
-                oneAdapter.add(models)
+                oneAdapter.setItems(models)
             }
             actOnActivity {
                 runWithDelay { // run with delay to let the items settle

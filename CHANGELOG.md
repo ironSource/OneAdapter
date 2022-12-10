@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 2.1.2
+-------------
+* Fixed: issue #43
+* Added: isRebinding flag to onBind Metadata
+
 Version 2.1.1
 -------------
 * Fixed: unable to update data from a background thread

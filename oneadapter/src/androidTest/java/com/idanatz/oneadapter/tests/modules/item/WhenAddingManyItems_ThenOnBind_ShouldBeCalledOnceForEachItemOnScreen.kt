@@ -26,7 +26,7 @@ class WhenAddingManyItems_ThenOnBind_ShouldBeCalledOnceForEachItemOnScreen : Bas
                 oneAdapter.attachItemModule(TestItemModule())
             }
             actOnActivity {
-                oneAdapter.add(models)
+                oneAdapter.setItems(models)
             }
             untilAsserted {
                 models.sumBy { it.onBindCalls } shouldEqualTo numberOfHoldersInScreen

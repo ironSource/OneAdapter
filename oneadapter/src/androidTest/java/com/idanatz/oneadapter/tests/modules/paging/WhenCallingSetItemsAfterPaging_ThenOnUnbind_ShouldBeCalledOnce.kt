@@ -24,13 +24,13 @@ class WhenCallingSetItemsAfterPaging_ThenOnUnbind_ShouldBeCalledOnce : BaseTest(
                 oneAdapter.run {
                     attachItemModule(modulesGenerator.generateValidItemModule(R.layout.test_model_large))
                     attachPagingModule(TestPagingModule())
-                    setItems(modelGenerator.generateModels(15).toMutableList())
+                    setItems(modelGenerator.generateModels(3))
                 }
             }
             actOnActivity {
                 runWithDelay { // run with delay to let the items settle
-                    recyclerView.smoothScrollToPosition(oneAdapter.itemCount)
-                }
+					oneAdapter.setItems(modelGenerator.generateModels(2)) // replace the previous items and LoadingIndicator with new data
+				}
             }
             untilAsserted {
                 onUnbindCalls shouldEqualTo 1
@@ -42,12 +42,6 @@ class WhenCallingSetItemsAfterPaging_ThenOnUnbind_ShouldBeCalledOnce : BaseTest(
     inner class TestPagingModule : PagingModule() {
         init {
             config = modulesGenerator.generateValidPagingModuleConfig()
-            onLoadMore {
-				runWithDelay {
-					// generate 2 other models
-					oneAdapter.setItems(modelGenerator.generateModels(2))
-				}
-            }
             onUnbind { _, _ ->
                 onUnbindCalls++
             }

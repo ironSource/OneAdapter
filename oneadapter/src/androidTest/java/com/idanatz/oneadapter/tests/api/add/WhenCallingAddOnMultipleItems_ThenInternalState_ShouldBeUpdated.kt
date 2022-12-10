@@ -1,41 +1,39 @@
 @file:Suppress("ClassName")
 
-package com.idanatz.oneadapter.tests.api
+package com.idanatz.oneadapter.tests.api.add
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.idanatz.oneadapter.helpers.BaseTest
+import org.amshove.kluent.shouldContainAll
 import org.amshove.kluent.shouldEqualTo
-import org.amshove.kluent.shouldNotContain
 import org.junit.Test
 import org.junit.runner.RunWith
 
-private const val NUMBER_OF_MODELS = 3
-private const val INDEX_TO_REMOVE = 1
+private const val NUM_OF_ITEMS_TO_ADD = 20
 
 @RunWith(AndroidJUnit4::class)
-class RemoveSingleItemByIndex : BaseTest() {
+class WhenCallingAddOnMultipleItems_ThenInternalState_ShouldBeUpdated : BaseTest() {
 
     @Test
     fun test() {
         configure {
-            val models = modelGenerator.generateModels(NUMBER_OF_MODELS)
-            val modelToRemove = models[INDEX_TO_REMOVE]
-            val oldItemCount = NUMBER_OF_MODELS
+            val modelsToAdd = modelGenerator.generateModels(NUM_OF_ITEMS_TO_ADD)
+            var oldItemCount = -1
 
             prepareOnActivity {
                 oneAdapter.run {
                     attachItemModule(modulesGenerator.generateValidItemModule())
-                    setItems(models.toMutableList())
+                    oldItemCount = itemCount
                 }
             }
             actOnActivity {
-                oneAdapter.remove(INDEX_TO_REMOVE)
+                oneAdapter.add(modelsToAdd)
             }
             untilAsserted {
                 val newItemList = oneAdapter.internalAdapter.data
                 val newItemCount = oneAdapter.itemCount
-                newItemList shouldNotContain modelToRemove
-                newItemCount shouldEqualTo (oldItemCount - 1)
+                newItemList shouldContainAll modelsToAdd
+                newItemCount shouldEqualTo (oldItemCount + NUM_OF_ITEMS_TO_ADD)
             }
         }
     }

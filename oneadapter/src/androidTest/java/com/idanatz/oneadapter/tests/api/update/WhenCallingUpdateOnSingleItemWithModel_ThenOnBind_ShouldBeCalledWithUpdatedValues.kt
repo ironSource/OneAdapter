@@ -1,6 +1,6 @@
 @file:Suppress("ClassName")
 
-package com.idanatz.oneadapter.tests.api
+package com.idanatz.oneadapter.tests.api.update
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.idanatz.oneadapter.external.modules.ItemModule

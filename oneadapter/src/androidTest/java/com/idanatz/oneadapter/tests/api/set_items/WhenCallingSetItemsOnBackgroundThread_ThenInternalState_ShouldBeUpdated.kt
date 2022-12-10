@@ -1,40 +1,42 @@
 @file:Suppress("ClassName")
 
-package com.idanatz.oneadapter.tests.api
+package com.idanatz.oneadapter.tests.api.set_items
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.idanatz.oneadapter.helpers.BaseTest
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldContainAll
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.Executors
 
-private const val NUMBER_OF_MODELS = 5
-private const val INDEX_TO_ADD = 3
+private const val NUM_OF_ITEMS_TO_GENERATE = 20
 
 @RunWith(AndroidJUnit4::class)
-class AddSingleItemToIndex : BaseTest() {
+class WhenCallingSetItemsOnBackgroundThread_ThenInternalState_ShouldBeUpdated : BaseTest() {
 
     @Test
     fun test() {
         configure {
-            val modelToAdd = modelGenerator.generateModel()
-            val oldItemCount = NUMBER_OF_MODELS
+            val modelsToSet = modelGenerator.generateModels(NUM_OF_ITEMS_TO_GENERATE)
+            var oldItemCount = -1
 
             prepareOnActivity {
                 oneAdapter.run {
                     attachItemModule(modulesGenerator.generateValidItemModule())
-					setItems(modelGenerator.generateModels(NUMBER_OF_MODELS).toMutableList())
+                    oldItemCount = itemCount
                 }
             }
             actOnActivity {
-                oneAdapter.add(INDEX_TO_ADD, modelToAdd)
+				Executors.newSingleThreadExecutor().execute {
+					oneAdapter.setItems(modelsToSet)
+				}
             }
             untilAsserted {
                 val newItemList = oneAdapter.internalAdapter.data
                 val newItemCount = oneAdapter.itemCount
-                newItemList[INDEX_TO_ADD] shouldEqual modelToAdd
-                newItemCount shouldEqualTo (oldItemCount + 1)
+                newItemList shouldContainAll modelsToSet
+                newItemCount shouldEqualTo (oldItemCount + NUM_OF_ITEMS_TO_GENERATE)
             }
         }
     }

@@ -1,6 +1,6 @@
 @file:Suppress("ClassName")
 
-package com.idanatz.oneadapter.tests.api
+package com.idanatz.oneadapter.tests.api.remove
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.idanatz.oneadapter.helpers.BaseTest

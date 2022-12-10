@@ -43,7 +43,7 @@ class WhenSelectingItem_ThenIsSelectedMetadata_ShouldBeUpdated : BaseTest() {
 			}
 			untilAsserted {
 				isSelectedCount shouldEqualTo 1
-				isNotSelectedCount shouldEqualTo 1
+				isNotSelectedCount shouldEqualTo 2 // 1 for the first item bind, 1 for the actual un-select
 			}
 		}
 	}

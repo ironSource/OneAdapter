@@ -28,7 +28,7 @@ class WhenAddingFewDifferentItems_ThenOnCreate_ShouldBeCalledOnceForEachItemOnSc
                 oneAdapter.attachItemModules(TestItemModule1(), TestItemModule2())
             }
             actOnActivity {
-                oneAdapter.add(models)
+                oneAdapter.setItems(models)
             }
             untilAsserted {
                 onCreateCalls shouldEqualTo numberOfHoldersInScreen

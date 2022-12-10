@@ -25,7 +25,7 @@ class TestBuilder(
 	}
 
 	fun assert(block: () -> Unit) = block()
-	fun untilAsserted(assertTimeout: Long = 3000L, assertDelay: Long = 0L, block: () -> Unit) {
+	fun untilAsserted(assertTimeout: Long = 5000L, assertDelay: Long = 0L, block: () -> Unit) {
 		handleDelay(assertDelay)
 
 		Awaitility.setDefaultTimeout(assertTimeout, TimeUnit.MILLISECONDS)

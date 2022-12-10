@@ -1,42 +1,40 @@
 @file:Suppress("ClassName")
 
-package com.idanatz.oneadapter.tests.api
+package com.idanatz.oneadapter.tests.api.remove
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.idanatz.oneadapter.helpers.BaseTest
-import org.amshove.kluent.shouldContainAll
 import org.amshove.kluent.shouldEqualTo
+import org.amshove.kluent.shouldNotContain
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.concurrent.Executors
 
-private const val NUM_OF_ITEMS_TO_GENERATE = 20
+private const val NUMBER_OF_MODELS = 4
 
 @RunWith(AndroidJUnit4::class)
-class WhenCallingSetItemsOnBackgroundThread_ThenInternalState_ShouldBeUpdated : BaseTest() {
+class WhenCallingRemoveOnMultipleItemsWithModels_ThenInternalState_ShouldBeUpdated : BaseTest() {
 
     @Test
     fun test() {
         configure {
-            val modelsToSet = modelGenerator.generateModels(NUM_OF_ITEMS_TO_GENERATE)
-            var oldItemCount = -1
+            val models = modelGenerator.generateModels(NUMBER_OF_MODELS)
+            val modelsToRemove = models.subList(1, 3)
+            val oldItemCount = NUMBER_OF_MODELS
 
             prepareOnActivity {
                 oneAdapter.run {
                     attachItemModule(modulesGenerator.generateValidItemModule())
-                    oldItemCount = itemCount
+                    setItems(models.toMutableList())
                 }
             }
             actOnActivity {
-				Executors.newSingleThreadExecutor().execute {
-					oneAdapter.setItems(modelsToSet)
-				}
+                oneAdapter.remove(modelsToRemove)
             }
             untilAsserted {
                 val newItemList = oneAdapter.internalAdapter.data
                 val newItemCount = oneAdapter.itemCount
-                newItemList shouldContainAll modelsToSet
-                newItemCount shouldEqualTo (oldItemCount + NUM_OF_ITEMS_TO_GENERATE)
+                newItemList shouldNotContain modelsToRemove
+                newItemCount shouldEqualTo (oldItemCount - modelsToRemove.size)
             }
         }
     }

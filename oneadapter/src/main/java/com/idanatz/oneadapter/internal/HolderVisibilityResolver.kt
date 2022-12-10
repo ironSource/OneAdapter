@@ -2,8 +2,8 @@ package com.idanatz.oneadapter.internal
 
 import android.graphics.Rect
 import com.idanatz.oneadapter.external.interfaces.Diffable
-import com.idanatz.oneadapter.internal.utils.extensions.findFirstVisibleItemPosition
-import com.idanatz.oneadapter.internal.utils.extensions.findLastVisibleItemPosition
+import com.idanatz.oneadapter.internal.utils.extensions.findFirstVisibleItemIndex
+import com.idanatz.oneadapter.internal.utils.extensions.findLastVisibleItemIndex
 import com.idanatz.oneadapter.internal.validator.Validator
 
 internal class HolderVisibilityResolver(private val internalAdapter: InternalAdapter) {
@@ -20,7 +20,7 @@ internal class HolderVisibilityResolver(private val internalAdapter: InternalAda
         val visibleIndexes = mutableListOf<Int>()
         val layoutManager = Validator.validateLayoutManagerExists(internalAdapter.recyclerView)
 
-        for (i in layoutManager.findFirstVisibleItemPosition()..layoutManager.findLastVisibleItemPosition()) {
+        for (i in layoutManager.findFirstVisibleItemIndex()..layoutManager.findLastVisibleItemIndex()) {
             val viewHolder = internalAdapter.recyclerView.findViewHolderForAdapterPosition(i) ?: continue
 
             // calculate visibility percentage
