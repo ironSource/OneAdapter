@@ -88,7 +88,7 @@ internal abstract class OneViewHolder<M : Diffable>(
 	}
 
 	private fun handleAnimations() {
-		if (metadata.isAnimating) {
+		if (metadata.isAnimatingFirstBind) {
 			firstBindAnimation?.setTarget(itemView)
 			firstBindAnimation?.start()
 		} else {
