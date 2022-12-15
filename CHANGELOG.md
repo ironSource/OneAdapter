@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 2.1.3
+-------------
+* Fixed: timing bug when paging would sometimes not start when initial data was below threshold
+
 Version 2.1.2
 -------------
 * Fixed: issue #43

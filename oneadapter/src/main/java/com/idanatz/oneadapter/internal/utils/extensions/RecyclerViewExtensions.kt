@@ -32,8 +32,8 @@ internal fun RecyclerView.LayoutManager.findFirstVisibleItemIndex(): Int {
 
 internal fun RecyclerView.LayoutManager.findLastVisibleItemIndex(): Int {
     return when (this) {
-        is LinearLayoutManager -> findLastVisibleItemPosition()
-        is GridLayoutManager -> findLastVisibleItemPosition()
+	    is GridLayoutManager -> findLastVisibleItemPosition()
+	    is LinearLayoutManager -> findLastVisibleItemPosition()
         is StaggeredGridLayoutManager -> {
             val lastVisibleItemPositions = findLastVisibleItemPositions(null)
 

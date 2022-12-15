@@ -4,8 +4,7 @@ Release Steps
 2. Update CHANGELOG with changes.
 3. Update README (features, latest dep version, etc...)
 4. Clean project.
-5. Publish to maven (using publishing -> publishToMavenLocal gradle task).
-6. Tag release commit.
-7. Create release branch.
-8. Merge to master.
-9. Create Git Release from the version tag.
+5. Tag release commit (x.x.x).
+6. Create release branch (vx.x.x).
+7. Merge to master.
+8. Create Git Release from the version tag.
