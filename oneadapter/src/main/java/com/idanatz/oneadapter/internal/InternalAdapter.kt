@@ -84,7 +84,7 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
 			// verify manually if paging should be triggered
 			// relevant when the new data matches the paging conditions and should not wait for a scroll event
 			if (modules.pagingModule != null) {
-				recyclerView.post { oneScrollListener?.handleLoadingEvent() }
+				uiHandler.postDelayed({ oneScrollListener?.handleLoadingEvent() }, UPDATE_DATA_DELAY_MILLIS)
 			}
 		}
 	}

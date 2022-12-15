@@ -28,11 +28,11 @@ internal class OneScrollListener (
         resetState()
     }
 
-    // This happens many times a second during a scroll, so be wary of the code you place here.
-    override fun onScrolled(view: RecyclerView, dx: Int, dy: Int) {
-        if (!view.isScrolling) {
-            return
-        }
+	// This happens many times a second during a scroll, so be wary of the code you place here.
+	override fun onScrolled(view: RecyclerView, dx: Int, dy: Int) {
+		if (!view.isScrolling) {
+			return
+		}
 
 		handleLoadingEvent()
 	}
@@ -45,15 +45,15 @@ internal class OneScrollListener (
 		when (evaluateLoadingState()) {
 			LoadingState.FinishLoading -> {
 				loading = false
-				loadMoreObserver.onLoadingStateChanged(loading)
+				loadMoreObserver.onLoadingStateChanged(false)
 			}
 			LoadingState.LoadingStarted -> {
 				loading = true
-				loadMoreObserver.onLoadingStateChanged(loading)
+				loadMoreObserver.onLoadingStateChanged(true)
 				currentPage++
 				loadMoreObserver.onLoadMore(currentPage)
 			}
-			else -> { }
+			else -> {}
 		}
 
 		// update the previous item count to the current item count
@@ -67,10 +67,10 @@ internal class OneScrollListener (
     }
 
     private fun evaluateLoadingState(): LoadingState {
-        val lastItemIndex = layoutManager.findLastItemIndex()
-        val lastVisibleItemIndex = layoutManager.findLastVisibleItemIndex()
+	    val lastItemIndex = layoutManager.findLastItemIndex()
+	    val lastVisibleItemIndex = layoutManager.findLastVisibleItemIndex()
 
-        return when {
+	    return when {
 			lastItemIndex == RecyclerView.NO_POSITION || lastVisibleItemIndex == RecyclerView.NO_POSITION -> LoadingState.Normal
             isLoadingFinished(lastItemIndex) -> LoadingState.FinishLoading
             shouldStartLoading(lastVisibleItemIndex, lastItemIndex) -> LoadingState.LoadingStarted
