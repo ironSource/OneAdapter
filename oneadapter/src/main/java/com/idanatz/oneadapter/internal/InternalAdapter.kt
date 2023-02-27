@@ -106,22 +106,22 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
         return oneViewHolder
     }
 
-    override fun onBindViewHolder(holder: OneViewHolder<Diffable>, position: Int) {
-	    val model = data[position]
-	    val isFirstBind = holderPositionHandler.isFirstBind(holder.itemViewType, position)
+	override fun onBindViewHolder(holder: OneViewHolder<Diffable>, position: Int) {
+		val model = data[position]
+		val isFirstBind = holderPositionHandler.isFirstBind(holder.itemViewType, position)
 		val metadata = Metadata(
-				position = position,
-				isRebinding = !isFirstBind && !recyclerView.isScrolling,
-				animationMetadata = object : AnimationMetadata {
-					override val isAnimatingFirstBind: Boolean = if (holder.firstBindAnimation != null) isFirstBind else false
-				},
-				selectionMetadata = object : SelectionMetadata {
-					override val isSelected: Boolean = isPositionSelected(position)
-				}
+			position = holder.adapterPosition, // don't use position variable, caused bugs with swiping
+			isRebinding = !isFirstBind && !recyclerView.isScrolling,
+			animationMetadata = object : AnimationMetadata {
+				override val isAnimatingFirstBind: Boolean = if (holder.firstBindAnimation != null) isFirstBind else false
+			},
+			selectionMetadata = object : SelectionMetadata {
+				override val isSelected: Boolean = isPositionSelected(position)
+			}
 		)
 		logger.logd { "onBindViewHolder -> holder: $holder, model: $model, metadata: $metadata" }
 		holder.onBindViewHolder(model, metadata)
-    }
+	}
 
     private fun onBindSelection(holder: OneViewHolder<Diffable>, position: Int, selected: Boolean) {
         val model = data[position]

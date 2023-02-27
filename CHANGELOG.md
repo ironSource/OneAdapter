@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 2.1.4
+-------------
+* Fixed: metadata position was not correct sometimes 
+
 Version 2.1.3
 -------------
 * Fixed: timing bug when paging would sometimes not start when initial data was below threshold
