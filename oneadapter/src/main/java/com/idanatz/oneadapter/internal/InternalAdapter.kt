@@ -139,11 +139,6 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
 
     override fun getItemViewType(position: Int) = viewHolderCreatorsStore.getCreatorUniqueIndex(data[position].javaClass)
 
-    fun getItemViewTypeFromClass(clazz: Class<*>): Int {
-        Validator.validateModelClassIsDiffable(clazz)
-        return viewHolderCreatorsStore.getCreatorUniqueIndex(clazz as Class<Diffable>)
-    }
-
     override fun onViewRecycled(holder: OneViewHolder<Diffable>) {
         super.onViewRecycled(holder)
         holder.onUnbind(holder.model)
@@ -374,5 +369,9 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         oneScrollListener?.let { recyclerView.removeOnScrollListener(it) }
     }
-    //endregion
+	//endregion
+
+	fun <M : Diffable> getItemViewTypeFromClass(clazz: Class<M>): Int = viewHolderCreatorsStore.getCreatorUniqueIndex(clazz as Class<Diffable>)
+
+	fun getItemPosition(item: Diffable) = data.indexOf(item)
 }

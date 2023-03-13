@@ -166,13 +166,17 @@ class OneAdapter(recyclerView: RecyclerView) {
 
     /**
      * Retrieves the view type associated with the items of the given class.
-     * Note that this class must implement the Diffable interface and the adapter must contain items of that class.
-     * @throws UnsupportedClassException if the class does not implement the Diffable interface
-     * or is not registered as an Module data type.
+     * @throws MissingModuleDefinitionException if the class is not registered as an Module data type.
      */
-    fun getItemViewTypeFromClass(clazz: Class<*>): Int {
-        return internalAdapter.getItemViewTypeFromClass(clazz)
+    fun <M : Diffable> getItemViewTypeFromClass(ofClass: Class<M>): Int {
+        return internalAdapter.getItemViewTypeFromClass(ofClass)
     }
+
+	/**
+	 * Returns the index of the first occurrence of the specified item in the adapter, or -1 if the specified
+	 * item is not contained in the adapter.
+	 */
+	fun getItemPosition(item: Diffable): Int = internalAdapter.getItemPosition(item)
 
 	fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
 		internalAdapter.registerAdapterDataObserver(observer)

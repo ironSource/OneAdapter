@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 2.1.5
+-------------
+* Added: API to get position of adapter item
+
 Version 2.1.4
 -------------
 * Fixed: metadata position was not correct sometimes 
