@@ -27,7 +27,7 @@ class WhenCallingGetItemViewTypeFromPosition_ThenItemViewTypes_ShouldBeCorrect :
                 }
             }
             actOnActivity {
-                runWithDelay(250) { oneAdapter.add(modelGenerator.generateDifferentModels(2)) }
+	            oneAdapter.add(modelGenerator.generateDifferentModels(2))
             }
             untilAsserted {
                 oneAdapter.getItemViewType(0) shouldEqualTo 0
