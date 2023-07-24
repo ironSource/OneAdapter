@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 2.1.6
+-------------
+* Added: isFirst and isLast to Metadata
+
 Version 2.1.5
 -------------
 * Added: API to get position of adapter item
