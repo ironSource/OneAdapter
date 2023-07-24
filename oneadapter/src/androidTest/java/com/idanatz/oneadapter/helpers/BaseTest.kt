@@ -6,10 +6,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.idanatz.oneadapter.generators.ModelGenerator
-import org.junit.runner.RunWith
 import org.junit.Before
 import androidx.test.ext.junit.rules.activityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.idanatz.oneadapter.OneAdapter
 import com.idanatz.oneadapter.dsl.TestBuilder
 import com.idanatz.oneadapter.generators.ModulesGenerator

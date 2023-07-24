@@ -5,6 +5,8 @@ import com.idanatz.oneadapter.external.event_hooks.SwipeEventHook
 data class Metadata(
 		val position: Int = -1,
 		val isRebinding: Boolean,
+		val isFirst: Boolean,
+		val isLast: Boolean,
 		private val animationMetadata: AnimationMetadata? = null,
 		private val selectionMetadata: SelectionMetadata? = null,
 		private val swipeMetadata: SwipeMetadata? = null

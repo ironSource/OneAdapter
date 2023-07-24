@@ -12,6 +12,7 @@ import com.idanatz.oneadapter.external.interfaces.Diffable
 import com.idanatz.oneadapter.external.modules.*
 import com.idanatz.oneadapter.internal.diffing.OneDiffUtil
 import com.idanatz.oneadapter.internal.holders.*
+import com.idanatz.oneadapter.internal.holders.Metadata as HolderMetadata
 import com.idanatz.oneadapter.internal.holders.OneViewHolder
 import com.idanatz.oneadapter.internal.holders_creators.ViewHolderCreator
 import com.idanatz.oneadapter.internal.holders_creators.ViewHolderCreatorsStore
@@ -109,9 +110,11 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
 	override fun onBindViewHolder(holder: OneViewHolder<Diffable>, position: Int) {
 		val model = data[position]
 		val isFirstBind = holderPositionHandler.isFirstBind(holder.itemViewType, position)
-		val metadata = Metadata(
-			position = holder.adapterPosition, // don't use position variable, caused bugs with swiping
+		val metadata = HolderMetadata(
+			position = holder.adapterPosition, // don't use position variable for future use, caused bugs with swiping
 			isRebinding = !isFirstBind && !recyclerView.isScrolling,
+			isFirst = position == 0,
+			isLast = position == itemCount - 1,
 			animationMetadata = object : AnimationMetadata {
 				override val isAnimatingFirstBind: Boolean = if (holder.firstBindAnimation != null) isFirstBind else false
 			},
