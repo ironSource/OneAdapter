@@ -119,6 +119,10 @@ class ItemSelectionModuleActivity : BaseExampleActivity() {
                 oneAdapter.modules.itemSelectionModule?.actions?.startSelection()
                 return true
             }
+	        R.id.action_select_all -> {
+		        oneAdapter.modules.itemSelectionModule?.actions?.selectAll()
+		        return true
+	        }
             else -> super.onOptionsItemSelected(item)
         }
     }

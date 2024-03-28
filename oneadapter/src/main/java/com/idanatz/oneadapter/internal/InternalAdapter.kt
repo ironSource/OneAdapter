@@ -31,7 +31,7 @@ import java.lang.IllegalStateException
 
 private const val UPDATE_DATA_DELAY_MILLIS = 100L
 
-@Suppress("UNCHECKED_CAST", "NAME_SHADOWING")
+@Suppress("UNCHECKED_CAST")
 internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Adapter<OneViewHolder<Diffable>>(),
         LoadMoreObserver, SelectionObserver, ItemSelectionActions {
 
@@ -44,7 +44,7 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
     private val context
         get() = recyclerView.context
 
-    private val viewHolderCreatorsStore = ViewHolderCreatorsStore()
+	private val viewHolderCreatorsStore = ViewHolderCreatorsStore()
     private val holderPositionHandler = HolderPositionHandler()
     private val logger = Logger(this)
 
@@ -137,7 +137,7 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
     override fun getItemId(position: Int): Long  {
         val item = data[position]
         // javaClass is used for lettings different Diffable models share the same unique identifier
-        return item.javaClass.name.hashCode() + item.uniqueIdentifier
+        return (item.javaClass.name.hashCode() + item.uniqueIdentifier)
     }
 
     override fun getItemViewType(position: Int) = viewHolderCreatorsStore.getCreatorUniqueIndex(data[position].javaClass)
@@ -317,7 +317,14 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
     fun enableSelection(itemSelectionModule: ItemSelectionModule) {
         itemSelectionModule.actions = this
         modules.itemSelectionModule = itemSelectionModule
-        oneSelectionHandler = OneSelectionHandler(itemSelectionModule, recyclerView).also { it.observer = this }
+        oneSelectionHandler = OneSelectionHandler(
+            selectionModule = itemSelectionModule,
+            recyclerView = recyclerView,
+            getItemModuleByItemId = { itemId ->
+                val model = data.find { getItemId(data.indexOf(it)) == itemId } ?: return@OneSelectionHandler null
+                modules.itemModules[model::class.java]
+             }
+        ).also { it.observer = this }
     }
 
     override fun onItemStateChanged(holder: OneViewHolder<Diffable>, position: Int, selected: Boolean) {
@@ -340,7 +347,15 @@ internal class InternalAdapter(val recyclerView: RecyclerView) : RecyclerView.Ad
         oneSelectionHandler?.startSelection()
     }
 
-    override fun clearSelection(): Boolean {
+	override fun select(position: Int): Boolean? {
+		return oneSelectionHandler?.select(position)
+	}
+
+	override fun selectAll(): Boolean? {
+		return oneSelectionHandler?.selectAll()
+	}
+
+	override fun clearSelection(): Boolean {
         return oneSelectionHandler?.clearSelection() ?: false
     }
 

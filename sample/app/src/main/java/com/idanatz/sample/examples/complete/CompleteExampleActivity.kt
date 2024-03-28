@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide
 import com.idanatz.oneadapter.external.event_hooks.SwipeEventHook
 import com.idanatz.oneadapter.external.modules.*
 import com.idanatz.oneadapter.external.modules.ItemSelectionModuleConfig.*
+import com.idanatz.oneadapter.external.states.SelectionStateConfig
 import com.idanatz.sample.examples.BaseExampleActivity
 import com.idanatz.sample.examples.ActionsDialog.*
 import com.idanatz.sample.models.StoriesModel
@@ -282,6 +283,10 @@ class CompleteExampleActivity : BaseExampleActivity() {
                 oneAdapter.modules.itemSelectionModule?.actions?.startSelection()
                 return true
             }
+	        R.id.action_select_all -> {
+		        oneAdapter.modules.itemSelectionModule?.actions?.selectAll()
+		        return true
+	        }
             else -> super.onOptionsItemSelected(item)
         }
     }

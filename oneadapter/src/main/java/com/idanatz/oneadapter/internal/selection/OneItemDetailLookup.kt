@@ -9,8 +9,7 @@ import com.idanatz.oneadapter.internal.utils.extensions.toOneViewHolder
 
 internal class OneItemDetailLookup(private val recyclerView: RecyclerView) : ItemDetailsLookup<Long>() {
 
-    @Nullable
-    override fun getItemDetails(@NotNull e: MotionEvent): ItemDetails<Long>? {
+    override fun getItemDetails(e: MotionEvent): ItemDetails<Long>? {
         return recyclerView.findChildViewUnder(e.x, e.y)?.let {
             val viewHolder = recyclerView.getChildViewHolder(it).toOneViewHolder()
             return viewHolder.createItemLookupInformation()

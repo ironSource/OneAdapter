@@ -8,8 +8,16 @@
         android:id="@+id/action_start_selection"
         android:orderInCategory="300"
         android:title="Start Selection"
-        android:visible="false"
+        android:visible="true"
         android:icon="@drawable/ic_check_box_white_24dp"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_select_all"
+        android:orderInCategory="300"
+        android:title="Select All"
+        android:visible="true"
+        android:icon="@drawable/baseline_checklist_24"
         app:showAsAction="ifRoom"/>
 
     <item

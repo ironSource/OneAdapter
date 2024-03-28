@@ -3,16 +3,17 @@ package com.idanatz.oneadapter.internal.selection
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.RecyclerView
+import com.idanatz.oneadapter.external.modules.ItemModule
 import com.idanatz.oneadapter.external.modules.ItemSelectionModule
 import com.idanatz.oneadapter.external.modules.ItemSelectionModuleConfig
 import com.idanatz.oneadapter.external.states.SelectionStateConfig
 import com.idanatz.oneadapter.internal.utils.extensions.toOneViewHolder
 import java.util.*
 
-@Suppress("UNCHECKED_CAST")
 internal class OneSelectionHandler(
-		selectionModule: ItemSelectionModule,
-		val recyclerView: RecyclerView
+	selectionModule: ItemSelectionModule,
+	val recyclerView: RecyclerView,
+	val getItemModuleByItemId: (Long) -> ItemModule<*>?
 ) : SelectionTracker.SelectionObserver<Long>() {
 
 	private val ghostKey = UUID.randomUUID().mostSignificantBits
@@ -29,15 +30,13 @@ internal class OneSelectionHandler(
 	.withSelectionPredicate(object : SelectionTracker.SelectionPredicate<Long>() {
 		override fun canSetStateForKey(key: Long, nextState: Boolean): Boolean {
 			if (key == ghostKey)
-				return true // always accept let the ghost key
+				return true // always accept the ghost key
 
-			val forbidSelection = recyclerView.findViewHolderForItemId(key)?.toOneViewHolder()?.let { holder ->
-				holder.statesHooksMap?.getSelectionState()?.config?.let { selectionStateConfig ->
-					selectionStateConfig.selectionTrigger == SelectionStateConfig.SelectionTrigger.Manual && !isInManualSelection()
-				} ?: true
-			} ?: true
+			val itemModule = getItemModuleByItemId(key) ?: return false
 
-			return !forbidSelection
+			val isEnabled = itemModule.states.getSelectionState()?.config?.enabled ?: false
+			val forbidDueToManualSelection = itemModule.states.getSelectionState()?.config?.selectionTrigger == SelectionStateConfig.SelectionTrigger.Manual && !isInManualSelection()
+			return isEnabled && !forbidDueToManualSelection
 		}
 
 		override fun canSetStateAtPosition(position: Int, nextState: Boolean): Boolean = true
@@ -54,6 +53,24 @@ internal class OneSelectionHandler(
 
 	fun startSelection() {
 		selectionTracker.select(ghostKey)
+	}
+
+	fun select(position: Int): Boolean {
+		val key = itemKeyProvider.getKey(position) ?: return false
+		return selectionTracker.select(key)
+	}
+
+	fun selectAll(): Boolean {
+		val itemCount = recyclerView.adapter?.itemCount ?: 0
+		val toBeSelectedKeys = arrayListOf<Long>()
+		for (i in 0 until itemCount) {
+			val key = itemKeyProvider.getKey(i)
+			if (key != null && !selectionTracker.isSelected(key)) {
+				toBeSelectedKeys.add(key)
+			}
+
+		}
+		return selectionTracker.setItemsSelected(toBeSelectedKeys, true)
 	}
 
 	fun clearSelection(): Boolean = selectionTracker.clearSelection()

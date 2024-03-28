@@ -5,6 +5,8 @@ import com.idanatz.oneadapter.external.interfaces.Diffable
 interface ItemSelectionActions {
 
     fun startSelection()
+	fun select(position: Int): Boolean?
+	fun selectAll(): Boolean?
     fun clearSelection(): Boolean?
 
     fun getSelectedItems(): List<Diffable>
