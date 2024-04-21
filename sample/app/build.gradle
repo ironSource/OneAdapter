@@ -5,7 +5,7 @@ apply from: '../../versions.gradle'
 
 ext {
     LOTTIE_VERSION = '2.7.0'
-    ROOM_VERSION = '2.3.0'
+    ROOM_VERSION = '2.5.1'
     VIEW_MODEL_VERSION = '2.0.0'
     GLIDE_VERSION = '4.8.0'
 }
