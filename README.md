@@ -1,5 +1,12 @@
 ![Logo](DEV/logo.png)
 
+<br>
+
+# Announcement: repository changing ownership
+On the 21th of May 2024 this repository will change ownership and move to the personal account of one of it's maintainers, [Idan Atsmon.](https://github.com/idanatz)
+
+<br>
+
 # OneAdapter 
 [![](https://jitpack.io/v/idanatz/OneAdapter.svg)](https://jitpack.io/#idanatz/OneAdapter)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-OneAdapter-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/7824)
